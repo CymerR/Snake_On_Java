@@ -76,5 +76,12 @@ public class SnakeObject {
 			dir = newDirection;
 		}
 	}
-
+	
+	
+	public void eat() {
+		currentLength++;
+	}
+	
+	public int getHeadX() { return sX[0];}
+	public int getHeadY() { return sY[0];}
 }

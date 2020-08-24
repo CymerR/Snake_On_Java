@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -20,11 +21,13 @@ public class Canvas extends JPanel implements ActionListener {
 
 	// preferences
 	public static int tileSize = 32;
-	public static final int cols = 40;
+	public static final int cols = 30;
 	public static final int WIDTH = tileSize * cols, HEIGHT = tileSize * cols;
 	//
 
 	private SnakeObject snake;
+
+	private int appleX, appleY;
 
 	public Canvas() {
 		snake = new SnakeObject(2, 1);
@@ -33,6 +36,8 @@ public class Canvas extends JPanel implements ActionListener {
 		setBackground(Color.black);
 		addKeyListener(new EventHandler());
 		setFocusable(true);
+		
+		createApple();
 	}
 
 	@Override
@@ -42,6 +47,12 @@ public class Canvas extends JPanel implements ActionListener {
 		repaint();
 
 		snake.step();
+		
+		//check if snake 'eats' an apple
+		if (snake.getHeadX() == appleX && snake.getHeadY() == appleY) {
+			snake.eat();
+			createApple();
+		}
 
 	}
 
@@ -59,6 +70,10 @@ public class Canvas extends JPanel implements ActionListener {
 				g.drawRect(i * tileSize, j * tileSize, tileSize, tileSize);
 			}
 		}
+
+		// draw an apple
+		g.setColor(Color.orange);
+		g.fillRect(appleX * tileSize + 1, appleY * tileSize + 1, tileSize - 1, tileSize - 1);
 
 	}
 
@@ -88,6 +103,12 @@ public class Canvas extends JPanel implements ActionListener {
 			;
 		}
 
+	}
+
+	public void createApple() {
+		Random r = new Random();
+		appleX = r.nextInt(cols) + 1;
+		appleY = r.nextInt(cols) + 1;
 	}
 
 }
